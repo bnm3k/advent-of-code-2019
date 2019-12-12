@@ -2,24 +2,20 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"strconv"
 	"strings"
 
 	utils "github.com/nagamocha3000/aoc2019/src/helpers"
 )
 
-func preprocessIntCode(nums []int) []int {
-	intCode := make([]int, len(nums))
-	copy(intCode, nums)
-	intCode[1] = 12
-	intCode[2] = 2
-	return intCode
+//mutates intCode
+func preprocessIntCode(intCode []int, noun, verb int) {
+	intCode[1] = noun
+	intCode[2] = verb
 }
 
-func evaluateIntCode(nums []int) []int {
-	intCode := make([]int, len(nums))
-	copy(intCode, nums)
+//mutates intCode
+func evaluateIntCode(intCode []int) {
 	for currPt := 0; ; {
 		if intCode[currPt] == 99 {
 			break
@@ -39,21 +35,47 @@ func evaluateIntCode(nums []int) []int {
 			currPt += 4
 		}
 	}
-	return intCode
 }
 
-func getResult(intCode []int) int {
+func getDesiredNounVerb(nums []int, desiredResult int) {
+
+}
+
+func getResult(nums []int, noun, verb int) int {
+	intCode := make([]int, len(nums))
+	copy(intCode, nums)
+	preprocessIntCode(intCode, noun, verb)
+	evaluateIntCode(intCode)
 	return intCode[0]
 }
 
-func getFileContents(filePath string) string {
-	content, err := ioutil.ReadFile(filePath)
-	utils.CheckErr(err)
-	return string(content)
+func getNounVerbCombo(nums []int, target int) int {
+	noun, verb := 0, 0
+outer:
+	for ; noun <= 99; noun++ {
+		for ; verb <= 99; verb++ {
+			result := getResult(nums, noun, verb)
+			if result == target {
+				break outer
+			}
+		}
+		verb = 0
+	}
+	return (100 * noun) + verb
+}
+
+func task1(nums []int) {
+	result := getResult(nums, 12, 2)
+	fmt.Printf("Task 1 result: %d\n", result)
+}
+
+func task2(nums []int) {
+	result := getNounVerbCombo(nums, 19690720)
+	fmt.Printf("Task 2 result: %d\n", result)
 }
 
 func main() {
-	content := getFileContents("input.txt")
+	content := utils.GetFileContentsAsStr("input.txt")
 	content = strings.Trim(content, " \n\t")
 	numStrs := strings.Split(content, ",")
 	var nums []int
@@ -62,8 +84,6 @@ func main() {
 			nums = append(nums, num)
 		}
 	}
-	preprocessedIntCode := preprocessIntCode(nums)
-	evaluatedIntCode := evaluateIntCode(preprocessedIntCode)
-	result := getResult(evaluatedIntCode)
-	fmt.Printf("Task 1 result: %d", result)
+	task1(nums)
+	task2(nums)
 }
