@@ -1,7 +1,9 @@
-package main
+package day02
 
 import (
 	"fmt"
+	"path/filepath"
+	"runtime"
 	"strconv"
 	"strings"
 
@@ -37,10 +39,7 @@ func evaluateIntCode(intCode []int) {
 	}
 }
 
-func getDesiredNounVerb(nums []int, desiredResult int) {
-
-}
-
+//creates copy of nums, does not mutate nums
 func getResult(nums []int, noun, verb int) int {
 	intCode := make([]int, len(nums))
 	copy(intCode, nums)
@@ -74,8 +73,14 @@ func task2(nums []int) {
 	fmt.Printf("Task 2 result: %d\n", result)
 }
 
-func main() {
-	content := utils.GetFileContentsAsStr("input.txt")
+//Answer ...
+func Answer() {
+	//get path to input
+	_, filename, _, _ := runtime.Caller(0)
+	inputFilePath := filepath.Join(filepath.Dir(filename), "input.txt")
+
+	//read input content
+	content := utils.GetFileContentsAsStr(inputFilePath)
 	content = strings.Trim(content, " \n\t")
 	numStrs := strings.Split(content, ",")
 	var nums []int
@@ -84,6 +89,8 @@ func main() {
 			nums = append(nums, num)
 		}
 	}
+
+	//answer
 	task1(nums)
 	task2(nums)
 }

@@ -1,11 +1,11 @@
-package main
+package day02
 
 import (
 	"reflect"
 	"testing"
 )
 
-func TestTask(t *testing.T) {
+func TestTask1(t *testing.T) {
 	cases := []struct {
 		IntCode            []int
 		FinalExpectedState []int

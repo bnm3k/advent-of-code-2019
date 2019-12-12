@@ -1,10 +1,12 @@
-package main
+package day01
 
 import (
 	"bufio"
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
+	"runtime"
 	"strconv"
 
 	utils "github.com/nagamocha3000/aoc2019/src/helpers"
@@ -43,9 +45,14 @@ func getFuelTask2(weight int) int {
 	return fuelRequired + getFuelTask2(fuelRequired)
 }
 
-func main() {
+//Answer ...
+func Answer() {
+	//get path to input
+	_, filename, _, _ := runtime.Caller(0)
+	inputFilePath := filepath.Join(filepath.Dir(filename), "input.txt")
+
 	//read file contents
-	file, err := os.Open("./input.txt")
+	file, err := os.Open(inputFilePath)
 	utils.CheckErr(err)
 	defer file.Close()
 
