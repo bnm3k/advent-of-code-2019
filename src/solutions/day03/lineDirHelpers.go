@@ -95,3 +95,14 @@ func getManhattanDistance(p1, p2 point) int {
 	}
 	return abs(p1.x-p2.x) + abs(p1.y-p2.y)
 }
+
+func getClosestPoint(startingPt point, points []point) point {
+	minDist := getManhattanDistance(startingPt, points[0])
+	closestPt := points[0]
+	for _, pt := range points {
+		if getManhattanDistance(startingPt, pt) < minDist {
+			closestPt = pt
+		}
+	}
+	return closestPt
+}
